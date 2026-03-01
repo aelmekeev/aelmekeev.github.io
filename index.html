@@ -3,32 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Site - The Stage</title>
+    <title>Personal Site - The Stage & Configurable Box</title>
     <style>
         /* =========================================
            CENTRAL CONFIGURATION (CSS VARIABLES)
            ========================================= */
         :root {
-            /* Dimensions */
-            --shelf-depth: 400px; /* How deep the shelf goes into the screen */
-            --frame-width: 15px;  /* Thickness of the wooden cupboard frame */
+            /* Stage Dimensions */
+            --shelf-depth: 600px; 
+            --frame-width: 15px;  
+
+            /* Box 1 Dimensions (12.5 x 23 x 36 scaled by 15) */
+            --box-width: 540px;   
+            --box-height: 187.5px;
+            --box-depth: 345px;   
+
+            /* Box Placement */
+            --box-pos-left: 10%;      /* Horizontal position on the shelf */
+            --box-pos-z: -300px;      /* Depth push into the shelf */
+            --box-pos-left-mobile: 50%;
+            --box-pos-z-mobile: -400px;
+
+            /* Shelf Minimum Width constraints */
+            --shelf-margin: 100px; 
+            --shelf-min-width: calc(var(--box-width) + var(--shelf-margin));
+
+            /* 1-Point Perspective (Vanishing Point) */
+            --vp-x: 120%; 
+            --vp-y: 30%;
+            --vp-x-mobile: 120%;
+            --vp-y-mobile: 30%;
 
             /* Colors - Backgrounds & Structural */
-            --color-wall: #f7f5f0;              /* Off-white pastel wall */
-            --color-frame: #cbb89d;             /* Wooden cupboard frame */
-            --color-cupboard-inside: #a38d72;   /* Darker right side inside cupboard */
-            --color-cupboard-border: #8e7b63;   /* Dividing line inside cupboard */
+            --color-wall: #f7f5f0;              
+            --color-frame: #cbb89d;             
+            --color-cupboard-inside: #a38d72;   
+            --color-cupboard-border: #8e7b63;   
 
-            /* Colors - 3D Shelf Faces (simulating ambient light/shadows) */
-            --color-shelf-base: #e3d3bd;        /* Base wood color */
-            --color-shelf-border: #c8b498;      /* Corner lines of the shelf */
-            --color-shelf-back: #d6c4aa;        /* Slightly darker for depth */
-            --color-shelf-right: #cfbc9f;       /* Darker due to angle */
-            --color-shelf-top: #d1bda2;         /* Ceiling of shelf */
-            --color-shelf-bottom: #e8d9c5;      /* Floor of shelf (lightest, catching light) */
+            /* Colors - 3D Shelf Faces */
+            --color-shelf-base: #e3d3bd;        
+            --color-shelf-border: #c8b498;      
+            --color-shelf-back: #d6c4aa;        
+            --color-shelf-right: #cfbc9f;       
+            --color-shelf-top: #d1bda2;         
+            --color-shelf-bottom: #e8d9c5;      
+
+            /* Colors - Box 1 (Pastel Blue) */
+            --color-box-main: #a8c1d9;
+            --color-box-dark: #95aecd; 
+            --color-box-light: #bccfe3; 
         }
 
-        /* CSS Reset for consistent cross-browser rendering */
+        /* CSS Reset */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -36,7 +62,6 @@
         }
 
         body {
-            /* Non-Scrollable fixed view */
             width: 100vw;
             height: 100vh;
             overflow: hidden;
@@ -44,42 +69,35 @@
             background-color: var(--color-wall); 
         }
 
-        /* * The Stage Layout 
-         * Uses CSS Grid to separate the wall, shelf, and right-inside area.
-         */
+        /* * The Stage Layout */
         .stage {
             display: grid;
-            /* 20% Left Wall | 60% Shelf | 20% Right Cupboard Inside */
             grid-template-columns: 1fr 3fr 1fr;
             width: 100%;
             height: 100%;
         }
 
-        /* The blank wall to the left */
         .wall-left {
             background-color: var(--color-wall);
             border-right: var(--frame-width) solid var(--color-frame);
         }
 
-        /* The Cupboard structural area */
         .cupboard-area {
             display: flex;
             height: 100%;
-            /* Top and bottom frames of the cupboard */
             border-top: var(--frame-width) solid var(--color-frame);
             border-bottom: var(--frame-width) solid var(--color-frame);
         }
 
-        /* * The 3D Shelf Container 
-         */
+        /* * The 3D Shelf Container */
         .shelf-scene {
             flex-grow: 1;
             width: 100%;
             height: 100%;
-            /* 1-point perspective setup */
+            min-width: var(--shelf-min-width); 
             perspective: 1200px;
-            /* Vanishing point: slightly right (75%) and above center (30%) */
-            perspective-origin: 75% 30%; 
+            perspective-origin: var(--vp-x) var(--vp-y); 
+            overflow: hidden; 
         }
 
         .shelf-cube {
@@ -89,25 +107,20 @@
             transform-style: preserve-3d;
         }
 
-        /* Base styles for the interior faces of the shelf */
         .shelf-face {
             position: absolute;
             background-color: var(--color-shelf-base);
             border: 1px solid var(--color-shelf-border);
-            /* Add an inner shadow to fake ambient occlusion/lighting */
             box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.05);
         }
 
-        /* The back wall of the shelf cavity */
         .shelf-face.back {
             width: 100%;
             height: 100%;
-            /* Pushing it deep into the screen using the variable */
             transform: translateZ(calc(-1 * var(--shelf-depth)));
             background-color: var(--color-shelf-back);
         }
 
-        /* The left wall of the cavity */
         .shelf-face.left {
             width: var(--shelf-depth);
             height: 100%;
@@ -115,7 +128,6 @@
             transform: rotateY(90deg);
         }
 
-        /* The right wall of the cavity */
         .shelf-face.right {
             width: var(--shelf-depth);
             height: 100%;
@@ -125,7 +137,6 @@
             background-color: var(--color-shelf-right);
         }
 
-        /* The ceiling of the cavity */
         .shelf-face.top {
             width: 100%;
             height: var(--shelf-depth);
@@ -134,7 +145,6 @@
             background-color: var(--color-shelf-top);
         }
 
-        /* The floor of the cavity where boxes will sit */
         .shelf-face.bottom {
             width: 100%;
             height: var(--shelf-depth);
@@ -144,31 +154,99 @@
             background-color: var(--color-shelf-bottom);
         }
 
-        /* The dark interior of the cupboard to the right of the shelf */
         .cupboard-right {
             background-color: var(--color-cupboard-inside);
             border-left: 5px solid var(--color-cupboard-border);
         }
 
-        /* * Mobile Transformation 
-         */
+        /* =========================================
+           THE SHOEBOX (Project)
+           ========================================= */
+        .shoebox {
+            position: absolute;
+            bottom: 0; 
+            /* Using the new variables for placement */
+            left: var(--box-pos-left); 
+            width: var(--box-width);
+            height: var(--box-height);
+            transform-style: preserve-3d;
+            /* Using the new variable for depth */
+            transform: translateZ(var(--box-pos-z)); 
+            transition: transform 0.4s ease-out;
+            cursor: pointer;
+        }
+
+        .box-face {
+            position: absolute;
+            border: 1px solid rgba(0,0,0,0.05); 
+        }
+
+        .box-face.front {
+            width: var(--box-width);
+            height: var(--box-height);
+            background-color: var(--color-box-main);
+            transform: translateZ(calc(var(--box-depth) / 2));
+        }
+
+        .box-face.back {
+            width: var(--box-width);
+            height: var(--box-height);
+            background-color: var(--color-box-dark);
+            transform: rotateY(180deg) translateZ(calc(var(--box-depth) / 2));
+        }
+
+        .box-face.right {
+            width: var(--box-depth);
+            height: var(--box-height);
+            background-color: var(--color-box-dark);
+            left: calc((var(--box-width) - var(--box-depth)) / 2);
+            transform: rotateY(90deg) translateZ(calc(var(--box-width) / 2));
+        }
+
+        .box-face.left {
+            width: var(--box-depth);
+            height: var(--box-height);
+            background-color: var(--color-box-dark);
+            left: calc((var(--box-width) - var(--box-depth)) / 2);
+            transform: rotateY(-90deg) translateZ(calc(var(--box-width) / 2));
+        }
+
+        .box-face.top {
+            width: var(--box-width);
+            height: var(--box-depth);
+            background-color: var(--color-box-light);
+            top: calc((var(--box-height) - var(--box-depth)) / 2);
+            transform: rotateX(90deg) translateZ(calc(var(--box-height) / 2));
+        }
+
+        .box-face.bottom {
+            width: var(--box-width);
+            height: var(--box-depth);
+            background-color: var(--color-box-dark);
+            top: calc((var(--box-height) - var(--box-depth)) / 2);
+            transform: rotateX(-90deg) translateZ(calc(var(--box-height) / 2));
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+
+        /* * Mobile Transformation */
         @media (max-width: 768px) {
             .stage {
-                /* Collapse everything so the shelf fills 100% of the screen */
                 grid-template-columns: 100%;
             }
-            .wall-left {
-                display: none;
-            }
-            .cupboard-right {
+            .wall-left, .cupboard-right {
                 display: none;
             }
             .cupboard-area {
-                border: none; /* Remove borders so shelf truly sticks to edges */
+                border: none; 
             }
-            /* Adjust perspective slightly for a better mobile viewing angle */
             .shelf-scene {
-                perspective-origin: 50% 30%; /* Centered horizontally on mobile */
+                perspective-origin: var(--vp-x-mobile) var(--vp-y-mobile); 
+                min-width: 100vw; 
+            }
+            .shoebox {
+                /* Using mobile specific placement variables */
+                left: var(--box-pos-left-mobile);
+                transform: translateX(-50%) translateZ(var(--box-pos-z-mobile)) rotateY(-90deg);
             }
         }
     </style>
@@ -179,7 +257,6 @@
         <div class="wall-left"></div>
 
         <div class="cupboard-area">
-            
             <div class="shelf-scene">
                 <div class="shelf-cube">
                     <div class="shelf-face back"></div>
@@ -187,9 +264,17 @@
                     <div class="shelf-face bottom"></div>
                     <div class="shelf-face left"></div>
                     <div class="shelf-face right"></div>
+
+                    <div class="shoebox">
+                        <div class="box-face front"></div>
+                        <div class="box-face back"></div>
+                        <div class="box-face right"></div>
+                        <div class="box-face left"></div>
+                        <div class="box-face top"></div>
+                        <div class="box-face bottom"></div>
+                    </div>
                 </div>
             </div>
-
         </div>
 
         <div class="cupboard-right"></div>
