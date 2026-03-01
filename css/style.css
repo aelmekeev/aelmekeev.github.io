@@ -137,7 +137,7 @@ body {
     ========================================= */
 .tape {
     display: none; 
-    background-color: #f4edd4;
+    background-color: var(--color-tape);
     color: #2b2b2b;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
