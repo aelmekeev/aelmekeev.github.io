@@ -3,7 +3,7 @@
     ========================================= */
 :root {
     /* Stage Dimensions */
-    --shelf-depth: 600px; 
+    --shelf-depth: 700px; 
     --frame-width: 15px;  
 
     /* =========================================
@@ -58,8 +58,8 @@
         ========================================= */
     --box3-width: 330px;   
     --box3-height: 150px;  
-    --box3-depth: 150px;   
-    --box3-lid-lip: 75px;  
+    --box3-depth: 250px;   
+    --box3-lid-lip: 35px;  
     
     --box3-color-main: #b2d3be; 
     --box3-color-dark: #9fbfab;
@@ -67,7 +67,7 @@
     
     --box3-pos-bottom: calc(var(--box1-height) + var(--box2-height) + (var(--lid-gap) * 2)); 
     --box3-pos-left: 25%; 
-    --box3-pos-z: -290px; 
+    --box3-pos-z: -360px; 
     --box3-rot-y: -0deg; 
     
     --box3-pos-left-mobile: 53%;
