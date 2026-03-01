@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Site - The Stage</title>
+    <style>
+        /* =========================================
+           CENTRAL CONFIGURATION (CSS VARIABLES)
+           ========================================= */
+        :root {
+            /* Dimensions */
+            --shelf-depth: 400px; /* How deep the shelf goes into the screen */
+            --frame-width: 15px;  /* Thickness of the wooden cupboard frame */
+
+            /* Colors - Backgrounds & Structural */
+            --color-wall: #f7f5f0;              /* Off-white pastel wall */
+            --color-frame: #cbb89d;             /* Wooden cupboard frame */
+            --color-cupboard-inside: #a38d72;   /* Darker right side inside cupboard */
+            --color-cupboard-border: #8e7b63;   /* Dividing line inside cupboard */
+
+            /* Colors - 3D Shelf Faces (simulating ambient light/shadows) */
+            --color-shelf-base: #e3d3bd;        /* Base wood color */
+            --color-shelf-border: #c8b498;      /* Corner lines of the shelf */
+            --color-shelf-back: #d6c4aa;        /* Slightly darker for depth */
+            --color-shelf-right: #cfbc9f;       /* Darker due to angle */
+            --color-shelf-top: #d1bda2;         /* Ceiling of shelf */
+            --color-shelf-bottom: #e8d9c5;      /* Floor of shelf (lightest, catching light) */
+        }
+
+        /* CSS Reset for consistent cross-browser rendering */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Non-Scrollable fixed view */
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: sans-serif;
+            background-color: var(--color-wall); 
+        }
+
+        /* * The Stage Layout 
+         * Uses CSS Grid to separate the wall, shelf, and right-inside area.
+         */
+        .stage {
+            display: grid;
+            /* 20% Left Wall | 60% Shelf | 20% Right Cupboard Inside */
+            grid-template-columns: 1fr 3fr 1fr;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* The blank wall to the left */
+        .wall-left {
+            background-color: var(--color-wall);
+            border-right: var(--frame-width) solid var(--color-frame);
+        }
+
+        /* The Cupboard structural area */
+        .cupboard-area {
+            display: flex;
+            height: 100%;
+            /* Top and bottom frames of the cupboard */
+            border-top: var(--frame-width) solid var(--color-frame);
+            border-bottom: var(--frame-width) solid var(--color-frame);
+        }
+
+        /* * The 3D Shelf Container 
+         */
+        .shelf-scene {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            /* 1-point perspective setup */
+            perspective: 1200px;
+            /* Vanishing point: slightly right (75%) and above center (30%) */
+            perspective-origin: 75% 30%; 
+        }
+
+        .shelf-cube {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        /* Base styles for the interior faces of the shelf */
+        .shelf-face {
+            position: absolute;
+            background-color: var(--color-shelf-base);
+            border: 1px solid var(--color-shelf-border);
+            /* Add an inner shadow to fake ambient occlusion/lighting */
+            box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.05);
+        }
+
+        /* The back wall of the shelf cavity */
+        .shelf-face.back {
+            width: 100%;
+            height: 100%;
+            /* Pushing it deep into the screen using the variable */
+            transform: translateZ(calc(-1 * var(--shelf-depth)));
+            background-color: var(--color-shelf-back);
+        }
+
+        /* The left wall of the cavity */
+        .shelf-face.left {
+            width: var(--shelf-depth);
+            height: 100%;
+            transform-origin: left center;
+            transform: rotateY(90deg);
+        }
+
+        /* The right wall of the cavity */
+        .shelf-face.right {
+            width: var(--shelf-depth);
+            height: 100%;
+            right: 0;
+            transform-origin: right center;
+            transform: rotateY(-90deg);
+            background-color: var(--color-shelf-right);
+        }
+
+        /* The ceiling of the cavity */
+        .shelf-face.top {
+            width: 100%;
+            height: var(--shelf-depth);
+            transform-origin: top center;
+            transform: rotateX(-90deg);
+            background-color: var(--color-shelf-top);
+        }
+
+        /* The floor of the cavity where boxes will sit */
+        .shelf-face.bottom {
+            width: 100%;
+            height: var(--shelf-depth);
+            bottom: 0;
+            transform-origin: bottom center;
+            transform: rotateX(90deg);
+            background-color: var(--color-shelf-bottom);
+        }
+
+        /* The dark interior of the cupboard to the right of the shelf */
+        .cupboard-right {
+            background-color: var(--color-cupboard-inside);
+            border-left: 5px solid var(--color-cupboard-border);
+        }
+
+        /* * Mobile Transformation 
+         */
+        @media (max-width: 768px) {
+            .stage {
+                /* Collapse everything so the shelf fills 100% of the screen */
+                grid-template-columns: 100%;
+            }
+            .wall-left {
+                display: none;
+            }
+            .cupboard-right {
+                display: none;
+            }
+            .cupboard-area {
+                border: none; /* Remove borders so shelf truly sticks to edges */
+            }
+            /* Adjust perspective slightly for a better mobile viewing angle */
+            .shelf-scene {
+                perspective-origin: 50% 30%; /* Centered horizontally on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stage">
+        <div class="wall-left"></div>
+
+        <div class="cupboard-area">
+            
+            <div class="shelf-scene">
+                <div class="shelf-cube">
+                    <div class="shelf-face back"></div>
+                    <div class="shelf-face top"></div>
+                    <div class="shelf-face bottom"></div>
+                    <div class="shelf-face left"></div>
+                    <div class="shelf-face right"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="cupboard-right"></div>
+    </div>
+
+</body>
+</html>
