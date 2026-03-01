@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Site - The Stage & Configurable Box</title>
+    <title>Personal Site - The Stage & Flap Lid Box</title>
     <style>
         /* =========================================
            CENTRAL CONFIGURATION (CSS VARIABLES)
@@ -17,6 +17,11 @@
             --box-width: 540px;   
             --box-height: 187.5px;
             --box-depth: 345px;   
+
+            /* Lid Dimensions (The realistic "Flap") */
+            --lid-overhang: 6px;  /* How much the lid sticks out beyond the box */
+            --lid-lip: 35px;      /* How far the flap hangs down */
+            --lid-gap: 2px;       /* Slight vertical lift to prevent 3D clipping */
 
             /* Box Placement */
             --box-pos-left: 10%;      /* Horizontal position on the shelf */
@@ -112,6 +117,8 @@
             background-color: var(--color-shelf-base);
             border: 1px solid var(--color-shelf-border);
             box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.05);
+            /* FIX FOR DESKTOP LEAK: Hides the exterior side of the walls */
+            backface-visibility: hidden; 
         }
 
         .shelf-face.back {
@@ -165,12 +172,10 @@
         .shoebox {
             position: absolute;
             bottom: 0; 
-            /* Using the new variables for placement */
             left: var(--box-pos-left); 
             width: var(--box-width);
             height: var(--box-height);
             transform-style: preserve-3d;
-            /* Using the new variable for depth */
             transform: translateZ(var(--box-pos-z)); 
             transition: transform 0.4s ease-out;
             cursor: pointer;
@@ -181,11 +186,14 @@
             border: 1px solid rgba(0,0,0,0.05); 
         }
 
+        /* MAIN BOX BODY */
         .box-face.front {
             width: var(--box-width);
             height: var(--box-height);
             background-color: var(--color-box-main);
             transform: translateZ(calc(var(--box-depth) / 2));
+            /* Shadow cast by the lid flap */
+            box-shadow: inset 0 40px 20px -10px rgba(0,0,0,0.25);
         }
 
         .box-face.back {
@@ -201,6 +209,7 @@
             background-color: var(--color-box-dark);
             left: calc((var(--box-width) - var(--box-depth)) / 2);
             transform: rotateY(90deg) translateZ(calc(var(--box-width) / 2));
+            box-shadow: inset 0 40px 20px -10px rgba(0,0,0,0.3);
         }
 
         .box-face.left {
@@ -209,14 +218,7 @@
             background-color: var(--color-box-dark);
             left: calc((var(--box-width) - var(--box-depth)) / 2);
             transform: rotateY(-90deg) translateZ(calc(var(--box-width) / 2));
-        }
-
-        .box-face.top {
-            width: var(--box-width);
-            height: var(--box-depth);
-            background-color: var(--color-box-light);
-            top: calc((var(--box-height) - var(--box-depth)) / 2);
-            transform: rotateX(90deg) translateZ(calc(var(--box-height) / 2));
+            box-shadow: inset 0 40px 20px -10px rgba(0,0,0,0.3);
         }
 
         .box-face.bottom {
@@ -226,6 +228,53 @@
             top: calc((var(--box-height) - var(--box-depth)) / 2);
             transform: rotateX(-90deg) translateZ(calc(var(--box-height) / 2));
             box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+
+        /* THE FLAP LID */
+        .box-face.lid-top {
+            width: calc(var(--box-width) + var(--lid-overhang) * 2);
+            height: calc(var(--box-depth) + var(--lid-overhang) * 2);
+            background-color: var(--color-box-light);
+            left: calc(-1 * var(--lid-overhang));
+            top: calc((var(--box-height) - var(--box-depth)) / 2 - var(--lid-overhang));
+            transform: rotateX(90deg) translateZ(calc(var(--box-height) / 2 + var(--lid-gap)));
+        }
+
+        .box-face.lid-front {
+            width: calc(var(--box-width) + var(--lid-overhang) * 2);
+            height: var(--lid-lip);
+            background-color: var(--color-box-main);
+            left: calc(-1 * var(--lid-overhang));
+            top: calc(-1 * var(--lid-gap));
+            transform: translateZ(calc(var(--box-depth) / 2 + var(--lid-overhang)));
+        }
+
+        /* FIX FOR MISSING LID GAP: Added the back flap */
+        .box-face.lid-back {
+            width: calc(var(--box-width) + var(--lid-overhang) * 2);
+            height: var(--lid-lip);
+            background-color: var(--color-box-dark);
+            left: calc(-1 * var(--lid-overhang));
+            top: calc(-1 * var(--lid-gap));
+            transform: rotateY(180deg) translateZ(calc(var(--box-depth) / 2 + var(--lid-overhang)));
+        }
+
+        .box-face.lid-right {
+            width: calc(var(--box-depth) + var(--lid-overhang) * 2);
+            height: var(--lid-lip);
+            background-color: var(--color-box-dark);
+            left: calc((var(--box-width) - var(--box-depth)) / 2 - var(--lid-overhang));
+            top: calc(-1 * var(--lid-gap));
+            transform: rotateY(90deg) translateZ(calc(var(--box-width) / 2 + var(--lid-overhang)));
+        }
+
+        .box-face.lid-left {
+            width: calc(var(--box-depth) + var(--lid-overhang) * 2);
+            height: var(--lid-lip);
+            background-color: var(--color-box-dark);
+            left: calc((var(--box-width) - var(--box-depth)) / 2 - var(--lid-overhang));
+            top: calc(-1 * var(--lid-gap));
+            transform: rotateY(-90deg) translateZ(calc(var(--box-width) / 2 + var(--lid-overhang)));
         }
 
         /* * Mobile Transformation */
@@ -244,9 +293,25 @@
                 min-width: 100vw; 
             }
             .shoebox {
-                /* Using mobile specific placement variables */
                 left: var(--box-pos-left-mobile);
-                transform: translateX(-50%) translateZ(var(--box-pos-z-mobile)) rotateY(-90deg);
+                /* FIX FOR WRONG SIDE FACING FRONT: Changed rotateY to positive 90deg */
+                transform: translateX(-50%) translateZ(var(--box-pos-z-mobile)) rotateY(90deg);
+            }
+            
+            /* DYNAMIC LIGHTING FIX: Now that the Left face is actually in front, this correctly brightens it */
+            .box-face.left {
+                background-color: var(--color-box-main);
+                box-shadow: inset 0 40px 20px -10px rgba(0,0,0,0.25);
+            }
+            .box-face.front {
+                background-color: var(--color-box-dark);
+                box-shadow: inset 0 40px 20px -10px rgba(0,0,0,0.3);
+            }
+            .box-face.lid-left {
+                background-color: var(--color-box-main);
+            }
+            .box-face.lid-front {
+                background-color: var(--color-box-dark);
             }
         }
     </style>
@@ -270,8 +335,13 @@
                         <div class="box-face back"></div>
                         <div class="box-face right"></div>
                         <div class="box-face left"></div>
-                        <div class="box-face top"></div>
                         <div class="box-face bottom"></div>
+
+                        <div class="box-face lid-top"></div>
+                        <div class="box-face lid-front"></div>
+                        <div class="box-face lid-back"></div>
+                        <div class="box-face lid-right"></div>
+                        <div class="box-face lid-left"></div>
                     </div>
                 </div>
             </div>
