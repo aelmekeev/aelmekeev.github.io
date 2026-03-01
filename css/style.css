@@ -1,0 +1,203 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: sans-serif;
+    background-color: var(--color-wall); 
+}
+
+.stage {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    width: 100%;
+    height: 100%;
+}
+
+.wall-left {
+    background-color: var(--color-wall);
+    border-right: var(--frame-width) solid var(--color-frame);
+}
+
+.cupboard-area {
+    display: flex;
+    height: 100%;
+    border-top: var(--frame-width) solid var(--color-frame);
+    border-bottom: var(--frame-width) solid var(--color-frame);
+    /* FIX 1: We moved overflow: hidden here. It safely clips the 3D leak 
+        without breaking the perspective hover hit-testing! */
+    overflow: hidden;
+}
+
+.shelf-scene {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    min-width: var(--shelf-min-width); 
+    perspective: 1200px;
+    perspective-origin: var(--vp-x) var(--vp-y); 
+    pointer-events: none; 
+}
+
+.shelf-cube {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.shelf-face {
+    position: absolute;
+    background-color: var(--color-shelf-base);
+    border: 1px solid var(--color-shelf-border);
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.05);
+    backface-visibility: hidden; 
+}
+
+.shelf-face.back { width: 100%; height: 100%; transform: translateZ(calc(-1 * var(--shelf-depth))); background-color: var(--color-shelf-back); }
+.shelf-face.left { width: var(--shelf-depth); height: 100%; transform-origin: left center; transform: rotateY(90deg); }
+.shelf-face.right { width: var(--shelf-depth); height: 100%; right: 0; transform-origin: right center; transform: rotateY(-90deg); background-color: var(--color-shelf-right); }
+.shelf-face.top { width: 100%; height: var(--shelf-depth); transform-origin: top center; transform: rotateX(-90deg); background-color: var(--color-shelf-top); }
+.shelf-face.bottom { width: 100%; height: var(--shelf-depth); bottom: 0; transform-origin: bottom center; transform: rotateX(90deg); background-color: var(--color-shelf-bottom); }
+
+.cupboard-right {
+    background-color: var(--color-cupboard-inside);
+    border-left: 5px solid var(--color-cupboard-border);
+}
+
+/* =========================================
+    DYNAMIC SHOEBOX BLUEPRINT
+    ========================================= */
+.shoebox {
+    position: absolute;
+    bottom: var(--b-pos-bottom); 
+    left: var(--b-pos-left); 
+    width: var(--b-width);
+    height: var(--b-height);
+    transform-style: preserve-3d;
+    transform: translateZ(var(--b-pos-z)) rotateY(var(--b-rot-y)); 
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+    cursor: pointer;
+    pointer-events: auto; 
+    will-change: transform; 
+}
+
+.shoebox:hover {
+    transform: translateZ(calc(var(--b-pos-z) + 80px)) rotateY(var(--b-rot-y));
+}
+
+/* FIX 2: Fade the shadow completely out when the box is hovered/pulled out */
+.shoebox:hover .box-face.bottom {
+    box-shadow: 0 0 20px rgba(0,0,0,0);
+}
+
+.box-1 {
+    --b-width: var(--box1-width); --b-height: var(--box1-height); --b-depth: var(--box1-depth); --b-lid-lip: var(--box1-lid-lip);
+    --b-color-main: var(--box1-color-main); --b-color-dark: var(--box1-color-dark); --b-color-light: var(--box1-color-light);
+    --b-pos-bottom: var(--box1-pos-bottom); --b-pos-left: var(--box1-pos-left); --b-pos-z: var(--box1-pos-z); --b-rot-y: var(--box1-rot-y);
+    --b-shadow: var(--box1-shadow);
+}
+
+.box-2 {
+    --b-width: var(--box2-width); --b-height: var(--box2-height); --b-depth: var(--box2-depth); --b-lid-lip: var(--box2-lid-lip);
+    --b-color-main: var(--box2-color-main); --b-color-dark: var(--box2-color-dark); --b-color-light: var(--box2-color-light);
+    --b-pos-bottom: var(--box2-pos-bottom); --b-pos-left: var(--box2-pos-left); --b-pos-z: var(--box2-pos-z); --b-rot-y: var(--box2-rot-y);
+    --b-shadow: var(--box2-shadow);
+}
+
+.box-3 {
+    --b-width: var(--box3-width); --b-height: var(--box3-height); --b-depth: var(--box3-depth); --b-lid-lip: var(--box3-lid-lip);
+    --b-color-main: var(--box3-color-main); --b-color-dark: var(--box3-color-dark); --b-color-light: var(--box3-color-light);
+    --b-pos-bottom: var(--box3-pos-bottom); --b-pos-left: var(--box3-pos-left); --b-pos-z: var(--box3-pos-z); --b-rot-y: var(--box3-rot-y);
+    --b-shadow: var(--box3-shadow);
+}
+
+.box-face {
+    position: absolute;
+    border: 1px solid rgba(0,0,0,0.05); 
+}
+
+.box-face.front {
+    width: var(--b-width); height: var(--b-height); background-color: var(--b-color-main);
+    transform: translateZ(calc(var(--b-depth) / 2)); 
+    box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.25);
+}
+.box-face.back {
+    width: var(--b-width); height: var(--b-height); background-color: var(--b-color-dark);
+    transform: rotateY(180deg) translateZ(calc(var(--b-depth) / 2));
+}
+.box-face.right {
+    width: var(--b-depth); height: var(--b-height); background-color: var(--b-color-dark);
+    left: calc((var(--b-width) - var(--b-depth)) / 2); transform: rotateY(90deg) translateZ(calc(var(--b-width) / 2));
+    box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.3);
+}
+.box-face.left {
+    width: var(--b-depth); height: var(--b-height); background-color: var(--b-color-dark);
+    left: calc((var(--b-width) - var(--b-depth)) / 2); transform: rotateY(-90deg) translateZ(calc(var(--b-width) / 2));
+    box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.3);
+}
+.box-face.bottom {
+    width: var(--b-width); height: var(--b-depth); background-color: var(--b-color-dark);
+    top: calc((var(--b-height) - var(--b-depth)) / 2); transform: rotateX(-90deg) translateZ(calc(var(--b-height) / 2));
+    box-shadow: var(--b-shadow); 
+    /* Added transition so the shadow gracefully disappears during hover */
+    transition: box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+
+/* THE FLAP LID */
+.box-face.lid-top {
+    width: calc(var(--b-width) + var(--lid-overhang) * 2); height: calc(var(--b-depth) + var(--lid-overhang) * 2);
+    background-color: var(--b-color-light); left: calc(-1 * var(--lid-overhang));
+    top: calc((var(--b-height) - var(--b-depth)) / 2 - var(--lid-overhang));
+    transform: rotateX(90deg) translateZ(calc(var(--b-height) / 2 + var(--lid-gap)));
+}
+.box-face.lid-front {
+    width: calc(var(--b-width) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
+    background-color: var(--b-color-main); left: calc(-1 * var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
+    transform: translateZ(calc(var(--b-depth) / 2 + var(--lid-overhang)));
+}
+.box-face.lid-back {
+    width: calc(var(--b-width) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
+    background-color: var(--b-color-dark); left: calc(-1 * var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
+    transform: rotateY(180deg) translateZ(calc(var(--b-depth) / 2 + var(--lid-overhang)));
+}
+.box-face.lid-right {
+    width: calc(var(--b-depth) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
+    background-color: var(--b-color-dark); left: calc((var(--b-width) - var(--b-depth)) / 2 - var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
+    transform: rotateY(90deg) translateZ(calc(var(--b-width) / 2 + var(--lid-overhang)));
+}
+.box-face.lid-left {
+    width: calc(var(--b-depth) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
+    background-color: var(--b-color-dark); left: calc((var(--b-width) - var(--b-depth)) / 2 - var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
+    transform: rotateY(-90deg) translateZ(calc(var(--b-width) / 2 + var(--lid-overhang)));
+}
+
+/* * Mobile Transformation */
+@media (max-width: 768px) {
+    .stage { grid-template-columns: 100%; }
+    .wall-left, .cupboard-right { display: none; }
+    .cupboard-area { border: none; }
+    .shelf-scene { perspective-origin: var(--vp-x-mobile) var(--vp-y-mobile); min-width: 100vw; }
+    
+    .box-1, .box-2, .box-3 {
+        transform: translateX(-50%) translateZ(var(--b-pos-z)) rotateY(var(--b-rot-y));
+    }
+    
+    .shoebox:hover {
+        transform: translateX(-50%) translateZ(calc(var(--b-pos-z) + 80px)) rotateY(var(--b-rot-y));
+    }
+
+    .box-1 { --b-pos-left: var(--box1-pos-left-mobile); --b-pos-z: var(--box1-pos-z-mobile); --b-rot-y: var(--box1-rot-y-mobile); }
+    .box-2 { --b-pos-left: var(--box2-pos-left-mobile); --b-pos-z: var(--box2-pos-z-mobile); --b-rot-y: var(--box2-rot-y-mobile); }
+    .box-3 { --b-pos-left: var(--box3-pos-left-mobile); --b-pos-z: var(--box3-pos-z-mobile); --b-rot-y: var(--box3-rot-y-mobile); }
+
+    .box-face.left { background-color: var(--b-color-main); box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.25); }
+    .box-face.front { background-color: var(--b-color-dark); box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.3); }
+    .box-face.lid-left { background-color: var(--b-color-main); }
+    .box-face.lid-front { background-color: var(--b-color-dark); }
+}

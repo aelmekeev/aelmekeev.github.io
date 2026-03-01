@@ -1,0 +1,104 @@
+/* =========================================
+    CENTRAL CONFIGURATION (CSS VARIABLES)
+    ========================================= */
+:root {
+    /* Stage Dimensions */
+    --shelf-depth: 600px; 
+    --frame-width: 15px;  
+
+    /* =========================================
+        BOX 1 CONFIGURATION (12.5 x 23 x 36)
+        ========================================= */
+    --box1-width: 540px;   
+    --box1-height: 187.5px;
+    --box1-depth: 345px;   
+    --box1-lid-lip: 55px; 
+    
+    --box1-color-main: #a8c1d9; 
+    --box1-color-dark: #95aecd; 
+    --box1-color-light: #bccfe3; 
+    --box1-pos-bottom: 0px; 
+    --box1-pos-left: 15%;      
+    --box1-pos-z: -350px;
+    --box1-rot-y: 0deg;
+    
+    --box1-pos-left-mobile: 50%;
+    --box1-pos-z-mobile: -360px;
+    --box1-rot-y-mobile: 90deg;
+
+    /* Broad shadow for the floor */
+    --box1-shadow: 0 0 40px rgba(0,0,0,0.5); 
+
+    /* =========================================
+        BOX 2 CONFIGURATION (11 x 20.5 x 33)
+        ========================================= */
+    --box2-width: 495px;   
+    --box2-height: 165px;  
+    --box2-depth: 307.5px; 
+    --box2-lid-lip: 60px; 
+    
+    --box2-color-main: #e6b8a2; 
+    --box2-color-dark: #d4a38d;
+    --box2-color-light: #f5c9b5;
+    
+    --box2-pos-bottom: calc(var(--box1-height) + var(--lid-gap)); 
+    --box2-pos-left: 19%; 
+    --box2-pos-z: -350px; 
+    --box2-rot-y: 3deg; 
+    
+    --box2-pos-left-mobile: 49%;
+    --box2-pos-z-mobile: -390px;
+    --box2-rot-y-mobile: 93deg;
+
+    /* TIGHT contact shadow to prevent the "flying" illusion on overhangs */
+    --box2-shadow: 0 0 10px rgba(0,0,0,0.4); 
+
+    /* =========================================
+        BOX 3 CONFIGURATION (10 x 10 x 22)
+        ========================================= */
+    --box3-width: 330px;   
+    --box3-height: 150px;  
+    --box3-depth: 150px;   
+    --box3-lid-lip: 75px;  
+    
+    --box3-color-main: #b2d3be; 
+    --box3-color-dark: #9fbfab;
+    --box3-color-light: #cbeade;
+    
+    --box3-pos-bottom: calc(var(--box1-height) + var(--box2-height) + (var(--lid-gap) * 2)); 
+    --box3-pos-left: 25%; 
+    --box3-pos-z: -290px; 
+    --box3-rot-y: -0deg; 
+    
+    --box3-pos-left-mobile: 53%;
+    --box3-pos-z-mobile: -350px;
+    --box3-rot-y-mobile: 90deg;
+
+    --box3-shadow: 0 0 10px rgba(0,0,0,0.4); 
+
+    /* =========================================
+        SHARED BOX SETTINGS
+        ========================================= */
+    --lid-overhang: 6px;  
+    --lid-gap: 2px;       
+    --shelf-margin: 100px; 
+    --shelf-min-width: calc(var(--box1-width) + var(--shelf-margin));
+
+    /* 1-Point Perspective */
+    --vp-x: 120%; 
+    --vp-y: 30%;
+    --vp-x-mobile: 120%;
+    --vp-y-mobile: 30%;
+
+    /* Colors - Structural */
+    --color-wall: #f7f5f0;              
+    --color-frame: #cbb89d;             
+    --color-cupboard-inside: #a38d72;   
+    --color-cupboard-border: #8e7b63;   
+    --color-shelf-base: #e3d3bd;        
+    --color-shelf-border: #c8b498;      
+    --color-shelf-back: #d6c4aa;        
+    --color-shelf-right: #cfbc9f;       
+    --color-shelf-top: #d1bda2;         
+    --color-shelf-bottom: #e8d9c5;      
+}
