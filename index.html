@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Site - The Stage & Shadow Fix</title>
+    <title>Personal Site - The Stage & Three Boxes</title>
     <style>
         /* =========================================
            CENTRAL CONFIGURATION (CSS VARIABLES)
@@ -19,6 +19,7 @@
             --box1-width: 540px;   
             --box1-height: 187.5px;
             --box1-depth: 345px;   
+            --box1-lid-lip: 55px; 
             
             --box1-color-main: #a8c1d9; 
             --box1-color-dark: #95aecd; 
@@ -42,6 +43,7 @@
             --box2-width: 495px;   
             --box2-height: 165px;  
             --box2-depth: 307.5px; 
+            --box2-lid-lip: 60px; 
             
             --box2-color-main: #e6b8a2; 
             --box2-color-dark: #d4a38d;
@@ -60,15 +62,37 @@
             --box2-shadow: 0 0 10px rgba(0,0,0,0.4); 
 
             /* =========================================
+               BOX 3 CONFIGURATION (10 x 10 x 22)
+               ========================================= */
+            --box3-width: 330px;   
+            --box3-height: 150px;  
+            --box3-depth: 150px;   
+            --box3-lid-lip: 75px;  
+            
+            --box3-color-main: #b2d3be; 
+            --box3-color-dark: #9fbfab;
+            --box3-color-light: #cbeade;
+            
+            --box3-pos-bottom: calc(var(--box1-height) + var(--box2-height) + (var(--lid-gap) * 2)); 
+            --box3-pos-left: 25%; 
+            --box3-pos-z: -290px; 
+            --box3-rot-y: -0deg; 
+            
+            --box3-pos-left-mobile: 53%;
+            --box3-pos-z-mobile: -350px;
+            --box3-rot-y-mobile: 90deg;
+
+            --box3-shadow: 0 0 10px rgba(0,0,0,0.4); 
+
+            /* =========================================
                SHARED BOX SETTINGS
                ========================================= */
             --lid-overhang: 6px;  
-            --lid-lip: 35px;      
             --lid-gap: 2px;       
             --shelf-margin: 100px; 
             --shelf-min-width: calc(var(--box1-width) + var(--shelf-margin));
 
-            /* 1-Point Perspective (Vanishing Point) */
+            /* 1-Point Perspective */
             --vp-x: 120%; 
             --vp-y: 30%;
             --vp-x-mobile: 120%;
@@ -102,7 +126,6 @@
             background-color: var(--color-wall); 
         }
 
-        /* * The Stage Layout */
         .stage {
             display: grid;
             grid-template-columns: 1fr 3fr 1fr;
@@ -122,7 +145,6 @@
             border-bottom: var(--frame-width) solid var(--color-frame);
         }
 
-        /* * The 3D Shelf Container */
         .shelf-scene {
             flex-grow: 1;
             width: 100%;
@@ -175,31 +197,24 @@
         }
 
         .box-1 {
-            --b-width: var(--box1-width);
-            --b-height: var(--box1-height);
-            --b-depth: var(--box1-depth);
-            --b-color-main: var(--box1-color-main);
-            --b-color-dark: var(--box1-color-dark);
-            --b-color-light: var(--box1-color-light);
-            --b-pos-bottom: var(--box1-pos-bottom);
-            --b-pos-left: var(--box1-pos-left);
-            --b-pos-z: var(--box1-pos-z);
-            --b-rot-y: var(--box1-rot-y);
-            --b-shadow: var(--box1-shadow); /* Apply Base Shadow */
+            --b-width: var(--box1-width); --b-height: var(--box1-height); --b-depth: var(--box1-depth); --b-lid-lip: var(--box1-lid-lip);
+            --b-color-main: var(--box1-color-main); --b-color-dark: var(--box1-color-dark); --b-color-light: var(--box1-color-light);
+            --b-pos-bottom: var(--box1-pos-bottom); --b-pos-left: var(--box1-pos-left); --b-pos-z: var(--box1-pos-z); --b-rot-y: var(--box1-rot-y);
+            --b-shadow: var(--box1-shadow);
         }
 
         .box-2 {
-            --b-width: var(--box2-width);
-            --b-height: var(--box2-height);
-            --b-depth: var(--box2-depth);
-            --b-color-main: var(--box2-color-main);
-            --b-color-dark: var(--box2-color-dark);
-            --b-color-light: var(--box2-color-light);
-            --b-pos-bottom: var(--box2-pos-bottom);
-            --b-pos-left: var(--box2-pos-left);
-            --b-pos-z: var(--box2-pos-z);
-            --b-rot-y: var(--box2-rot-y);
-            --b-shadow: var(--box2-shadow); /* Apply Tight Contact Shadow */
+            --b-width: var(--box2-width); --b-height: var(--box2-height); --b-depth: var(--box2-depth); --b-lid-lip: var(--box2-lid-lip);
+            --b-color-main: var(--box2-color-main); --b-color-dark: var(--box2-color-dark); --b-color-light: var(--box2-color-light);
+            --b-pos-bottom: var(--box2-pos-bottom); --b-pos-left: var(--box2-pos-left); --b-pos-z: var(--box2-pos-z); --b-rot-y: var(--box2-rot-y);
+            --b-shadow: var(--box2-shadow);
+        }
+
+        .box-3 {
+            --b-width: var(--box3-width); --b-height: var(--box3-height); --b-depth: var(--box3-depth); --b-lid-lip: var(--box3-lid-lip);
+            --b-color-main: var(--box3-color-main); --b-color-dark: var(--box3-color-dark); --b-color-light: var(--box3-color-light);
+            --b-pos-bottom: var(--box3-pos-bottom); --b-pos-left: var(--box3-pos-left); --b-pos-z: var(--box3-pos-z); --b-rot-y: var(--box3-rot-y);
+            --b-shadow: var(--box3-shadow);
         }
 
         .box-face {
@@ -207,72 +222,57 @@
             border: 1px solid rgba(0,0,0,0.05); 
         }
 
-        /* MAIN BOX BODY */
+        /* MAIN BOX BODY - Shadows are now dynamically calculated based on lid height */
         .box-face.front {
-            width: var(--b-width); height: var(--b-height);
-            background-color: var(--b-color-main);
-            transform: translateZ(calc(var(--b-depth) / 2));
-            box-shadow: inset 0 40px 20px -10px rgba(0,0,0,0.25);
+            width: var(--b-width); height: var(--b-height); background-color: var(--b-color-main);
+            transform: translateZ(calc(var(--b-depth) / 2)); 
+            box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.25);
         }
         .box-face.back {
-            width: var(--b-width); height: var(--b-height);
-            background-color: var(--b-color-dark);
+            width: var(--b-width); height: var(--b-height); background-color: var(--b-color-dark);
             transform: rotateY(180deg) translateZ(calc(var(--b-depth) / 2));
         }
         .box-face.right {
-            width: var(--b-depth); height: var(--b-height);
-            background-color: var(--b-color-dark);
-            left: calc((var(--b-width) - var(--b-depth)) / 2);
-            transform: rotateY(90deg) translateZ(calc(var(--b-width) / 2));
-            box-shadow: inset 0 40px 20px -10px rgba(0,0,0,0.3);
+            width: var(--b-depth); height: var(--b-height); background-color: var(--b-color-dark);
+            left: calc((var(--b-width) - var(--b-depth)) / 2); transform: rotateY(90deg) translateZ(calc(var(--b-width) / 2));
+            box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.3);
         }
         .box-face.left {
-            width: var(--b-depth); height: var(--b-height);
-            background-color: var(--b-color-dark);
-            left: calc((var(--b-width) - var(--b-depth)) / 2);
-            transform: rotateY(-90deg) translateZ(calc(var(--b-width) / 2));
-            box-shadow: inset 0 40px 20px -10px rgba(0,0,0,0.3);
+            width: var(--b-depth); height: var(--b-height); background-color: var(--b-color-dark);
+            left: calc((var(--b-width) - var(--b-depth)) / 2); transform: rotateY(-90deg) translateZ(calc(var(--b-width) / 2));
+            box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.3);
         }
         .box-face.bottom {
-            width: var(--b-width); height: var(--b-depth);
-            background-color: var(--b-color-dark);
-            top: calc((var(--b-height) - var(--b-depth)) / 2);
-            transform: rotateX(-90deg) translateZ(calc(var(--b-height) / 2));
-            /* Dynamically map the configured shadow here */
+            width: var(--b-width); height: var(--b-depth); background-color: var(--b-color-dark);
+            top: calc((var(--b-height) - var(--b-depth)) / 2); transform: rotateX(-90deg) translateZ(calc(var(--b-height) / 2));
             box-shadow: var(--b-shadow); 
         }
 
         /* THE FLAP LID */
         .box-face.lid-top {
-            width: calc(var(--b-width) + var(--lid-overhang) * 2);
-            height: calc(var(--b-depth) + var(--lid-overhang) * 2);
-            background-color: var(--b-color-light);
-            left: calc(-1 * var(--lid-overhang));
+            width: calc(var(--b-width) + var(--lid-overhang) * 2); height: calc(var(--b-depth) + var(--lid-overhang) * 2);
+            background-color: var(--b-color-light); left: calc(-1 * var(--lid-overhang));
             top: calc((var(--b-height) - var(--b-depth)) / 2 - var(--lid-overhang));
             transform: rotateX(90deg) translateZ(calc(var(--b-height) / 2 + var(--lid-gap)));
         }
         .box-face.lid-front {
-            width: calc(var(--b-width) + var(--lid-overhang) * 2); height: var(--lid-lip);
-            background-color: var(--b-color-main);
-            left: calc(-1 * var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
+            width: calc(var(--b-width) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
+            background-color: var(--b-color-main); left: calc(-1 * var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
             transform: translateZ(calc(var(--b-depth) / 2 + var(--lid-overhang)));
         }
         .box-face.lid-back {
-            width: calc(var(--b-width) + var(--lid-overhang) * 2); height: var(--lid-lip);
-            background-color: var(--b-color-dark);
-            left: calc(-1 * var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
+            width: calc(var(--b-width) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
+            background-color: var(--b-color-dark); left: calc(-1 * var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
             transform: rotateY(180deg) translateZ(calc(var(--b-depth) / 2 + var(--lid-overhang)));
         }
         .box-face.lid-right {
-            width: calc(var(--b-depth) + var(--lid-overhang) * 2); height: var(--lid-lip);
-            background-color: var(--b-color-dark);
-            left: calc((var(--b-width) - var(--b-depth)) / 2 - var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
+            width: calc(var(--b-depth) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
+            background-color: var(--b-color-dark); left: calc((var(--b-width) - var(--b-depth)) / 2 - var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
             transform: rotateY(90deg) translateZ(calc(var(--b-width) / 2 + var(--lid-overhang)));
         }
         .box-face.lid-left {
-            width: calc(var(--b-depth) + var(--lid-overhang) * 2); height: var(--lid-lip);
-            background-color: var(--b-color-dark);
-            left: calc((var(--b-width) - var(--b-depth)) / 2 - var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
+            width: calc(var(--b-depth) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
+            background-color: var(--b-color-dark); left: calc((var(--b-width) - var(--b-depth)) / 2 - var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
             transform: rotateY(-90deg) translateZ(calc(var(--b-width) / 2 + var(--lid-overhang)));
         }
 
@@ -284,21 +284,21 @@
             .shelf-scene { perspective-origin: var(--vp-x-mobile) var(--vp-y-mobile); min-width: 100vw; }
             
             .box-1 {
-                --b-pos-left: var(--box1-pos-left-mobile);
-                --b-pos-z: var(--box1-pos-z-mobile);
-                --b-rot-y: var(--box1-rot-y-mobile);
+                --b-pos-left: var(--box1-pos-left-mobile); --b-pos-z: var(--box1-pos-z-mobile); --b-rot-y: var(--box1-rot-y-mobile);
                 transform: translateX(-50%) translateZ(var(--b-pos-z)) rotateY(var(--b-rot-y));
             }
-            
             .box-2 {
-                --b-pos-left: var(--box2-pos-left-mobile);
-                --b-pos-z: var(--box2-pos-z-mobile);
-                --b-rot-y: var(--box2-rot-y-mobile);
+                --b-pos-left: var(--box2-pos-left-mobile); --b-pos-z: var(--box2-pos-z-mobile); --b-rot-y: var(--box2-rot-y-mobile);
+                transform: translateX(-50%) translateZ(var(--b-pos-z)) rotateY(var(--b-rot-y));
+            }
+            .box-3 {
+                --b-pos-left: var(--box3-pos-left-mobile); --b-pos-z: var(--box3-pos-z-mobile); --b-rot-y: var(--box3-rot-y-mobile);
                 transform: translateX(-50%) translateZ(var(--b-pos-z)) rotateY(var(--b-rot-y));
             }
 
-            .box-face.left { background-color: var(--b-color-main); box-shadow: inset 0 40px 20px -10px rgba(0,0,0,0.25); }
-            .box-face.front { background-color: var(--b-color-dark); box-shadow: inset 0 40px 20px -10px rgba(0,0,0,0.3); }
+            /* Dynamic calculation added to the mobile overrides as well */
+            .box-face.left { background-color: var(--b-color-main); box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.25); }
+            .box-face.front { background-color: var(--b-color-dark); box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.3); }
             .box-face.lid-left { background-color: var(--b-color-main); }
             .box-face.lid-front { background-color: var(--b-color-dark); }
         }
@@ -319,29 +319,24 @@
                     <div class="shelf-face right"></div>
 
                     <div class="shoebox box-1">
-                        <div class="box-face front"></div>
-                        <div class="box-face back"></div>
-                        <div class="box-face right"></div>
-                        <div class="box-face left"></div>
-                        <div class="box-face bottom"></div>
-                        <div class="box-face lid-top"></div>
-                        <div class="box-face lid-front"></div>
-                        <div class="box-face lid-back"></div>
-                        <div class="box-face lid-right"></div>
-                        <div class="box-face lid-left"></div>
+                        <div class="box-face front"></div><div class="box-face back"></div>
+                        <div class="box-face right"></div><div class="box-face left"></div><div class="box-face bottom"></div>
+                        <div class="box-face lid-top"></div><div class="box-face lid-front"></div>
+                        <div class="box-face lid-back"></div><div class="box-face lid-right"></div><div class="box-face lid-left"></div>
                     </div>
 
                     <div class="shoebox box-2">
-                        <div class="box-face front"></div>
-                        <div class="box-face back"></div>
-                        <div class="box-face right"></div>
-                        <div class="box-face left"></div>
-                        <div class="box-face bottom"></div>
-                        <div class="box-face lid-top"></div>
-                        <div class="box-face lid-front"></div>
-                        <div class="box-face lid-back"></div>
-                        <div class="box-face lid-right"></div>
-                        <div class="box-face lid-left"></div>
+                        <div class="box-face front"></div><div class="box-face back"></div>
+                        <div class="box-face right"></div><div class="box-face left"></div><div class="box-face bottom"></div>
+                        <div class="box-face lid-top"></div><div class="box-face lid-front"></div>
+                        <div class="box-face lid-back"></div><div class="box-face lid-right"></div><div class="box-face lid-left"></div>
+                    </div>
+
+                    <div class="shoebox box-3">
+                        <div class="box-face front"></div><div class="box-face back"></div>
+                        <div class="box-face right"></div><div class="box-face left"></div><div class="box-face bottom"></div>
+                        <div class="box-face lid-top"></div><div class="box-face lid-front"></div>
+                        <div class="box-face lid-back"></div><div class="box-face lid-right"></div><div class="box-face lid-left"></div>
                     </div>
                 </div>
             </div>
