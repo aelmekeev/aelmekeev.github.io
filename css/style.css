@@ -4,9 +4,11 @@
     padding: 0;
 }
 
-body {
-    width: 100vw;
-    height: 100vh;
+html, body {
+    width: 100%;
+    height: 100%;
+    /* Fix for mobile browsers with dynamic bars */
+    height: -webkit-fill-available;
     overflow: hidden;
     font-family: sans-serif;
     background-color: var(--color-wall); 
@@ -92,10 +94,6 @@ body {
     transform: translateZ(calc(var(--b-pos-z) + 80px)) rotateY(var(--b-rot-y));
 }
 
-.shoebox:hover .box-face.bottom {
-    box-shadow: 0 0 20px rgba(0,0,0,0);
-}
-
 .box-1 {
     --b-width: var(--box1-width); --b-height: var(--box1-height); --b-depth: var(--box1-depth); --b-lid-lip: var(--box1-lid-lip);
     --b-color-main: var(--box1-color-main); --b-color-dark: var(--box1-color-dark); --b-color-light: var(--box1-color-light);
@@ -122,7 +120,6 @@ body {
     border: 1px solid rgba(0,0,0,0.05); 
 }
 
-/* Moved alignment to the bottom so tapes aren't hidden by the lids */
 .box-face.front, .box-face.left {
     display: flex;
     flex-direction: column;
@@ -141,7 +138,6 @@ body {
     color: #2b2b2b;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
-    /* Using filter: drop-shadow instead of box-shadow so it follows the torn clip-path edge perfectly */
     filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.4));
 }
 
@@ -160,11 +156,7 @@ body {
     width: 85%;
 }
 
-/* UNIQUE TAPE RIPS & ANGLES PER BOX 
-    Giving each piece of tape a unique polygon tear and rotation 
-*/
-
-/* Box 1 (Bottom) */
+/* UNIQUE TAPE RIPS & ANGLES */
 .box-1 .title-tape {
     transform: rotate(-2deg);
     clip-path: polygon(0% 5%, 2% 0%, 98% 3%, 100% 8%, 99% 97%, 96% 100%, 3% 96%, 1% 90%);
@@ -173,8 +165,6 @@ body {
     transform: rotate(1.5deg);
     clip-path: polygon(2% 2%, 4% 0%, 96% 4%, 99% 2%, 100% 94%, 97% 98%, 4% 100%, 0% 96%);
 }
-
-/* Box 2 (Middle) */
 .box-2 .title-tape {
     transform: rotate(1.5deg);
     clip-path: polygon(1% 0%, 4% 3%, 97% 1%, 100% 4%, 98% 99%, 95% 95%, 2% 100%, 0% 95%);
@@ -183,8 +173,6 @@ body {
     transform: rotate(-1deg);
     clip-path: polygon(0% 4%, 3% 1%, 98% 0%, 100% 5%, 99% 96%, 96% 100%, 2% 98%, 1% 92%);
 }
-
-/* Box 3 (Top) */
 .box-3 .title-tape {
     transform: rotate(-1deg);
     clip-path: polygon(2% 3%, 5% 0%, 95% 2%, 99% 4%, 100% 97%, 96% 100%, 3% 95%, 0% 98%);
@@ -202,69 +190,27 @@ body {
     transform: translateZ(calc(var(--b-depth) / 2)); 
     box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.25);
 }
-.box-face.back {
-    width: var(--b-width); height: var(--b-height); background-color: var(--b-color-dark);
-    transform: rotateY(180deg) translateZ(calc(var(--b-depth) / 2));
-}
-.box-face.right {
-    width: var(--b-depth); height: var(--b-height); background-color: var(--b-color-dark);
-    left: calc((var(--b-width) - var(--b-depth)) / 2); transform: rotateY(90deg) translateZ(calc(var(--b-width) / 2));
-    box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.3);
-}
-.box-face.left {
-    width: var(--b-depth); height: var(--b-height); background-color: var(--b-color-dark);
-    left: calc((var(--b-width) - var(--b-depth)) / 2); transform: rotateY(-90deg) translateZ(calc(var(--b-width) / 2));
-    box-shadow: inset 0 calc(var(--b-lid-lip) + 5px) 20px -10px rgba(0,0,0,0.3);
-}
-.box-face.bottom {
-    width: var(--b-width); height: var(--b-depth); background-color: var(--b-color-dark);
-    top: calc((var(--b-height) - var(--b-depth)) / 2); transform: rotateX(-90deg) translateZ(calc(var(--b-height) / 2));
-    box-shadow: var(--b-shadow); 
-    transition: box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
-}
+.box-face.back { width: var(--b-width); height: var(--b-height); background-color: var(--b-color-dark); transform: rotateY(180deg) translateZ(calc(var(--b-depth) / 2)); }
+.box-face.right { width: var(--b-depth); height: var(--b-height); background-color: var(--b-color-dark); left: calc((var(--b-width) - var(--b-depth)) / 2); transform: rotateY(90deg) translateZ(calc(var(--b-width) / 2)); }
+.box-face.left { width: var(--b-depth); height: var(--b-height); background-color: var(--b-color-dark); left: calc((var(--b-width) - var(--b-depth)) / 2); transform: rotateY(-90deg) translateZ(calc(var(--b-width) / 2)); }
+.box-face.bottom { width: var(--b-width); height: var(--b-depth); background-color: var(--b-color-dark); top: calc((var(--b-height) - var(--b-depth)) / 2); transform: rotateX(-90deg) translateZ(calc(var(--b-height) / 2)); box-shadow: var(--b-shadow); }
 
 /* THE FLAP LID */
-.box-face.lid-top {
-    width: calc(var(--b-width) + var(--lid-overhang) * 2); height: calc(var(--b-depth) + var(--lid-overhang) * 2);
-    background-color: var(--b-color-light); left: calc(-1 * var(--lid-overhang));
-    top: calc((var(--b-height) - var(--b-depth)) / 2 - var(--lid-overhang));
-    transform: rotateX(90deg) translateZ(calc(var(--b-height) / 2 + var(--lid-gap)));
-}
-.box-face.lid-front {
-    width: calc(var(--b-width) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
-    background-color: var(--b-color-main); left: calc(-1 * var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
-    transform: translateZ(calc(var(--b-depth) / 2 + var(--lid-overhang)));
-}
-.box-face.lid-back {
-    width: calc(var(--b-width) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
-    background-color: var(--b-color-dark); left: calc(-1 * var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
-    transform: rotateY(180deg) translateZ(calc(var(--b-depth) / 2 + var(--lid-overhang)));
-}
-.box-face.lid-right {
-    width: calc(var(--b-depth) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
-    background-color: var(--b-color-dark); left: calc((var(--b-width) - var(--b-depth)) / 2 - var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
-    transform: rotateY(90deg) translateZ(calc(var(--b-width) / 2 + var(--lid-overhang)));
-}
-.box-face.lid-left {
-    width: calc(var(--b-depth) + var(--lid-overhang) * 2); height: var(--b-lid-lip);
-    background-color: var(--b-color-dark); left: calc((var(--b-width) - var(--b-depth)) / 2 - var(--lid-overhang)); top: calc(-1 * var(--lid-gap));
-    transform: rotateY(-90deg) translateZ(calc(var(--b-width) / 2 + var(--lid-overhang)));
-}
+.box-face.lid-top { width: calc(var(--b-width) + var(--lid-overhang) * 2); height: calc(var(--b-depth) + var(--lid-overhang) * 2); background-color: var(--b-color-light); left: calc(-1 * var(--lid-overhang)); top: calc((var(--b-height) - var(--b-depth)) / 2 - var(--lid-overhang)); transform: rotateX(90deg) translateZ(calc(var(--b-height) / 2 + var(--lid-gap))); }
+.box-face.lid-front { width: calc(var(--b-width) + var(--lid-overhang) * 2); height: var(--b-lid-lip); background-color: var(--b-color-main); left: calc(-1 * var(--lid-overhang)); top: calc(-1 * var(--lid-gap)); transform: translateZ(calc(var(--b-depth) / 2 + var(--lid-overhang))); }
+.box-face.lid-back { width: calc(var(--b-width) + var(--lid-overhang) * 2); height: var(--b-lid-lip); background-color: var(--b-color-dark); left: calc(-1 * var(--lid-overhang)); top: calc(-1 * var(--lid-gap)); transform: rotateY(180deg) translateZ(calc(var(--b-depth) / 2 + var(--lid-overhang))); }
+.box-face.lid-right { width: calc(var(--b-depth) + var(--lid-overhang) * 2); height: var(--b-lid-lip); background-color: var(--b-color-dark); left: calc((var(--b-width) - var(--b-depth)) / 2 - var(--lid-overhang)); top: calc(-1 * var(--lid-gap)); transform: rotateY(90deg) translateZ(calc(var(--b-width) / 2 + var(--lid-overhang))); }
+.box-face.lid-left { width: calc(var(--b-depth) + var(--lid-overhang) * 2); height: var(--b-lid-lip); background-color: var(--b-color-dark); left: calc((var(--b-width) - var(--b-depth)) / 2 - var(--lid-overhang)); top: calc(-1 * var(--lid-gap)); transform: rotateY(-90deg) translateZ(calc(var(--b-width) / 2 + var(--lid-overhang))); }
 
 /* * Mobile Transformation */
 @media (max-width: 768px) {
-    .stage { grid-template-columns: 100%; }
+    .stage { grid-template-columns: 100%; width: 100vw; }
     .wall-left, .cupboard-right { display: none; }
-    .cupboard-area { border: none; }
-    .shelf-scene { perspective-origin: var(--vp-x-mobile) var(--vp-y-mobile); min-width: 100vw; }
+    .cupboard-area { border: none; width: 100%; }
+    .shelf-scene { perspective-origin: var(--vp-x-mobile) var(--vp-y-mobile); min-width: 100%; }
     
-    .box-1, .box-2, .box-3 {
-        transform: translateX(-50%) translateZ(var(--b-pos-z)) rotateY(var(--b-rot-y));
-    }
-    
-    .shoebox:hover {
-        transform: translateX(-50%) translateZ(calc(var(--b-pos-z) + 80px)) rotateY(var(--b-rot-y));
-    }
+    .box-1, .box-2, .box-3 { transform: translateX(-50%) translateZ(var(--b-pos-z)) rotateY(var(--b-rot-y)); }
+    .shoebox:hover { transform: translateX(-50%) translateZ(calc(var(--b-pos-z) + 80px)) rotateY(var(--b-rot-y)); }
 
     .box-1 { --b-pos-left: var(--box1-pos-left-mobile); --b-pos-z: var(--box1-pos-z-mobile); --b-rot-y: var(--box1-rot-y-mobile); }
     .box-2 { --b-pos-left: var(--box2-pos-left-mobile); --b-pos-z: var(--box2-pos-z-mobile); --b-rot-y: var(--box2-rot-y-mobile); }
@@ -277,7 +223,4 @@ body {
 
     .box-face.front .tape { display: none; }
     .box-face.left .tape { display: block; }
-    
-    .title-tape { font-size: 0.95rem; width: 85%; padding: 6px 12px; }
-    .desc-tape { font-size: 0.7rem; width: 95%; padding: 4px 8px; }
 }
