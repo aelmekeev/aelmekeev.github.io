@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 240">
+    <g stroke="#ffffff" stroke-width="80" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <circle cx="60" cy="180" r="10" />
+        <circle cx="230" cy="180" r="10" />
+    </g>
+
     <g stroke="#ffffff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none">
         <path d="M 70 50 L 90 50" />
         <path d="M 110 175 L 120 175" />
@@ -11,8 +16,6 @@
         <line x1="100" y1="140" x2="75" y2="40" />        
         <line x1="210" y1="120" x2="200" y2="60" />
         <line x1="210" y1="120" x2="230" y2="180" />
-        <circle cx="60" cy="180" r="40" />
-        <circle cx="230" cy="180" r="40" />
         <path d="M 90 150 Q 150 123 210 123" />
     </g>
 

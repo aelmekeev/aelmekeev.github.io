@@ -431,3 +431,59 @@ html, body {
         display: block;
     }
 }
+
+/* =========================================
+   Polaroid Instagram Link
+   ========================================= */
+
+.polaroid {
+    position: absolute;
+    /* Position on the left shelf face - adjust these values to place it exactly where you want */
+    top: 20%;
+    right: 60%;
+    /* using right since we are on the left wall looking inwards */
+
+    width: 100px;
+    /* Base width of the polaroid */
+    background-color: #fdfdfd;
+    /* Slightly off-white for realism */
+    padding: 6px 6px 20px 6px;
+    /* Thick bottom border characteristic of polaroids */
+    box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.4);
+
+    /* Slightly crooked rotation for that "imperfectly stuck" look */
+    transform: rotate(10deg);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* Hover interaction to make it feel tactile */
+.polaroid:hover {
+    transform: rotate(4deg) scale(1.05);
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+/* The photo area with the sunset gradient */
+.polaroid-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* Keeps the photo perfectly square */
+    /* based on https://www.instagram.com/p/CadOyjeIPV-/ */
+    background: linear-gradient(to bottom,
+            #3f4c82 0%,
+            /* Deep indigo/slate blue at the top */
+            #8874a9 30%,
+            /* Soft violet/purple */
+            #e4a1d1 65%,
+            /* Vibrant sunset pink */
+            #f9cfdb 85%,
+            /* Pale peachy-pink */
+            #d5e0eb 100%
+            /* Pale grayish-blue just above the silhouettes */
+        );
+    box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.2);
+    /* Slight inner shadow to sink the photo into the frame */
+}
