@@ -4,7 +4,8 @@
 :root {
     /* Stage Dimensions */
     --shelf-depth: 700px; 
-    --frame-width: 15px;  
+    --external-frame-width: 30px;
+    --internal-frame-width: 20px;
 
     /* =========================================
         BOX 1 CONFIGURATION (12.5 x 23 x 36)
@@ -14,7 +15,7 @@
     --box1-depth: 345px;   
     --box1-lid-lip: 55px; 
     
-    --box1-pos-bottom: 0px; 
+    --box1-pos-bottom: 1px; 
     --box1-pos-left: 15%;      
     --box1-pos-z: -350px;
     --box1-rot-y: 0deg;
@@ -39,7 +40,7 @@
     --box2-depth: 307.5px; 
     --box2-lid-lip: 60px; 
     
-    --box2-pos-bottom: calc(var(--box1-height) + var(--lid-gap)); 
+    --box2-pos-bottom: calc(var(--box1-height) + var(--lid-gap) + 1px); 
     --box2-pos-left: 19%; 
     --box2-pos-z: -350px; 
     --box2-rot-y: 3deg; 
@@ -63,7 +64,7 @@
     --box3-depth: 250px;   
     --box3-lid-lip: 35px;  
     
-    --box3-pos-bottom: calc(var(--box1-height) + var(--box2-height) + (var(--lid-gap) * 2)); 
+    --box3-pos-bottom: calc(var(--box1-height) + var(--box2-height) + (var(--lid-gap) * 2) + 1px); 
     --box3-pos-left: 25%; 
     --box3-pos-z: -360px; 
     --box3-rot-y: -0deg; 
@@ -93,10 +94,10 @@
     --vp-y-mobile: 30%;
 
     /* Colors - Structural */
-    --color-wall: #fdfbf7;              
-    --color-frame: #cdae8b;             
-    --color-cupboard-inside: #8c6f56;   
-    --color-cupboard-border: #7a5f48;   
+    --color-wall: #fff8f0;              
+    --color-frame: #b7a99a;             
+    --color-cupboard-inside: #a48766;   
+    --color-cupboard-border: #cdae8b;   
     --color-shelf-base: #e3ceb8;        
     --color-shelf-bottom: #e3ceb8;      
     --color-shelf-back: #d2bdad;        

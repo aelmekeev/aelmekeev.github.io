@@ -23,14 +23,14 @@ html, body {
 
 .wall-left {
     background-color: var(--color-wall);
-    border-right: var(--frame-width) solid var(--color-frame);
+    border-right: var(--external-frame-width) solid var(--color-frame);
 }
 
 .cupboard-area {
     display: flex;
     height: 100%;
-    border-top: var(--frame-width) solid var(--color-frame);
-    border-bottom: var(--frame-width) solid var(--color-frame);
+    border-top: var(--internal-frame-width) solid var(--color-cupboard-border);
+    border-bottom: var(--internal-frame-width) solid var(--color-cupboard-border);
     overflow: hidden;
 }
 
@@ -67,7 +67,7 @@ html, body {
 
 .cupboard-right {
     background-color: var(--color-cupboard-inside);
-    border-left: 5px solid var(--color-cupboard-border);
+    border-left: var(--internal-frame-width) solid var(--color-cupboard-border);
 }
 
 /* =========================================
